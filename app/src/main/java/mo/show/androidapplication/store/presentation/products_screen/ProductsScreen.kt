@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,21 +20,23 @@ import mo.show.androidapplication.store.presentation.util.components.MyTopAppBar
 
 @Composable
 internal fun ProductsScreen (
+    onBack:()->Unit,
     viewModel: ProductsViewModel= hiltViewModel()
 ){
    val state= viewModel.state.collectAsStateWithLifecycle()
-    ProductsContent(state = state.value)
+    ProductsContent(state = state.value, onBack)
 
 }
 
 @Composable
 fun ProductsContent(
-    state: ProductsViewState
+    state: ProductsViewState,
+    onBack: ()-> Unit
 ){
     LoadingDialog(isLoading = state.isLoading)
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar ={ MyTopAppBar(title = "Products") }
+        topBar ={ MyTopAppBar(title = "Products", onBack = onBack) }
     ) {
         LazyVerticalStaggeredGrid(
             modifier = Modifier.padding(top = it.calculateTopPadding()),
@@ -49,3 +52,5 @@ fun ProductsContent(
         }
     }
 }
+
+

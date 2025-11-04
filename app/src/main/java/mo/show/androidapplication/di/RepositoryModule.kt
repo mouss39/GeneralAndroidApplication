@@ -9,6 +9,7 @@ import mo.show.androidapplication.store.domain.repository.ProductsRepository
 import javax.inject.Singleton
 
 
+
 @Module
 @InstallIn(SingletonComponent::class)
  abstract class RepositoryModule {

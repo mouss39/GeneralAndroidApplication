@@ -1,0 +1,6 @@
+package mo.show.androidapplication.ui.navigation
+
+object Routes {
+    const val Main = "main"
+    const val Products = "products"
+}

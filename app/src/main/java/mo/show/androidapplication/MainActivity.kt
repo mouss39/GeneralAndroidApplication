@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import mo.show.androidapplication.store.presentation.products_screen.ProductsScreen
+import mo.show.androidapplication.ui.navigation.AppNavGraph
 
 import mo.show.androidapplication.ui.theme.AndroidArchitectureSampleTheme
 import mo.show.androidapplication.util.Event
@@ -43,7 +44,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ProductsScreen()
+                   // ProductsScreen()
+                    AppNavGraph()
                 }
             }
         }
