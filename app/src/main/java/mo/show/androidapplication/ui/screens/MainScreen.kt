@@ -31,7 +31,7 @@ fun MainScreenContent(
         }
     ) {padding ->
 
-        Spacer(Modifier.padding(10.dp))
+        Spacer(Modifier.padding(12.dp))
         Box(
             modifier = Modifier
                 .padding(padding)
