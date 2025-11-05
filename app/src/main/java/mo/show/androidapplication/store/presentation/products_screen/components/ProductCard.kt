@@ -1,10 +1,13 @@
 package mo.show.androidapplication.store.presentation.products_screen.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,6 +17,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -32,31 +36,52 @@ fun ProductCard(
         modifier = modifier,
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 10.dp
+            defaultElevation = 5.dp
         ),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
 
     ) {
-        Column (modifier = Modifier.padding(15.dp)){
+        Column (
+            modifier = Modifier.padding(1.dp)
+                .background(Color.Transparent)
+        ){
             AsyncImage(model= product.image,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(color = Color.Transparent)
                     .aspectRatio(1f),
                 contentScale = ContentScale.FillBounds
             )
             Spacer(modifier = Modifier.height(5.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.Transparent)
+                    .padding(16.dp)
 
-            Text(text= product.title,
-                style = MaterialTheme.typography.titleMedium)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ){
-                Text(text= product.category,
-                    style = MaterialTheme.typography.bodyMedium)
-                Text(text= product.price.toString(),
-                    style = MaterialTheme.typography.bodyMedium)
+
+
+            ) {
+                Text(
+                    text = product.title,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+
+                    horizontalArrangement = Arrangement.SpaceBetween,
+
+                    ) {
+                    Text(
+                        text = product.category,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        text = product.price.toString(),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
             }
 
 

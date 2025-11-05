@@ -1,15 +1,25 @@
 package mo.show.androidapplication.store.presentation.products_screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,22 +46,46 @@ fun ProductsContent(
     state: ProductsViewState,
     onBack: ()-> Unit
 ){
+    var query by remember { mutableStateOf("") }
+
+    val filteredProducts = remember(query, state.products) {
+        if (query.isBlank()) state.products
+        else state.products.filter { product ->
+            product.title.contains(query, ignoreCase = true)
+        }
+    }
+
     LoadingDialog(isLoading = state.isLoading)
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar ={ MyTopAppBar(title = "Products", onBack = onBack) }
-    ) {
-        LazyVerticalStaggeredGrid(
-            modifier = Modifier.padding(top = it.calculateTopPadding()),
-            columns = StaggeredGridCells.Fixed(count = 2),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalItemSpacing = 10.dp
+    ) {innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
-            items(state.products){product->
-               ProductCard(product = product)
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it },
+                label = { Text(text = "Search Products by Name") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                shape = RoundedCornerShape(16.dp)
+                )
+            LazyVerticalStaggeredGrid(
+                modifier = Modifier.padding(top = 10.dp),
+                columns = StaggeredGridCells.Fixed(count = 2),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalItemSpacing = 10.dp
+            ) {
+                items(filteredProducts) { product ->
+                    ProductCard(product = product)
+
+                }
 
             }
-
         }
     }
 }
