@@ -30,9 +30,11 @@ import mo.show.androidapplication.store.domain.model.Rating
 @Composable
 fun ProductCard(
     modifier: Modifier = Modifier,
-    product: Product) {
+    product: Product,
+    onClick:(Product)-> Unit) {
 
     Card(
+        onClick = { onClick(product) },
         modifier = modifier,
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(
@@ -103,5 +105,6 @@ fun ProductCardPreview() {
         rating = Rating(rage = 4.5, count = 120)
     )
 
-    ProductCard(product = sampleProduct)
+    ProductCard(product = sampleProduct,
+        onClick = {  })
 }

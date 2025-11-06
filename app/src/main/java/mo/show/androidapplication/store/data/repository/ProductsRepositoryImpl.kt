@@ -17,4 +17,13 @@ class ProductsRepositoryImpl @Inject constructor(
             productsApi.getProducts()
         }.mapLeft { it.toNetworkError() }
     }
+
+
+    override suspend fun getProductById(id:Int): Either<NetworkError, Product> {
+       return Either.catch {
+           productsApi.getProductById(id)
+       }.mapLeft {
+           it.toNetworkError()
+       }
+    }
 }

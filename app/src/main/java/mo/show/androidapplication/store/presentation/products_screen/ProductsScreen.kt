@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import mo.show.androidapplication.store.domain.model.Product
 import mo.show.androidapplication.store.domain.model.Rating
 import mo.show.androidapplication.store.presentation.products_screen.components.ProductCard
@@ -33,18 +34,20 @@ import mo.show.androidapplication.store.presentation.util.components.MyTopAppBar
 
 @Composable
 internal fun ProductsScreen (
+    onProductClick: (Int) -> Unit,
     onBack:()->Unit,
     viewModel: ProductsViewModel= hiltViewModel()
 ){
    val state= viewModel.state.collectAsStateWithLifecycle()
-    ProductsContent(state = state.value, onBack)
+    ProductsContent(state = state.value, onBack,onProductClick)
 
 }
 
 @Composable
 fun ProductsContent(
     state: ProductsViewState,
-    onBack: ()-> Unit
+    onBack: ()-> Unit,
+    onProductClick: (Int) -> Unit
 ){
     var query by remember { mutableStateOf("") }
 
@@ -81,7 +84,8 @@ fun ProductsContent(
                 verticalItemSpacing = 10.dp
             ) {
                 items(filteredProducts) { product ->
-                    ProductCard(product = product)
+                    ProductCard(product = product,
+                        onClick = { onProductClick(product.id) })
 
                 }
 
@@ -119,7 +123,8 @@ fun ProductsScreenPreview() {
             products = sampleProducts,
             isLoading = false
         ),
-        onBack = {}
+        onBack = {},
+        onProductClick = {}
     )
 }
 

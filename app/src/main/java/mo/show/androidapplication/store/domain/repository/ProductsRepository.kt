@@ -6,4 +6,6 @@ import mo.show.androidapplication.store.domain.model.Product
 
 interface ProductsRepository {
     suspend fun getProducts(): Either<NetworkError, List<Product>>
+    suspend fun getProductById(id: Int): Either<NetworkError, Product>
+
 }
