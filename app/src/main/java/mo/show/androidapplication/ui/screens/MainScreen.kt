@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mo.show.androidapplication.store.presentation.products_screen.ProductsViewModel
+import mo.show.androidapplication.store.presentation.util.components.CreativeTopBar
 import mo.show.androidapplication.ui.screens.components.ProductsList
 
 @Composable
@@ -42,7 +43,7 @@ fun MainScreenContent(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Main Screen") })
+            CreativeTopBar( title = "Main Screen")
         }
     ) {innerPadding ->
 

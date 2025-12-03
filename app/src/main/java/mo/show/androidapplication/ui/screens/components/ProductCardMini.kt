@@ -1,8 +1,7 @@
-package mo.show.androidapplication.store.presentation.products_screen.components
+package mo.show.androidapplication.ui.screens.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,15 +35,14 @@ import mo.show.androidapplication.store.domain.model.Product
 import mo.show.androidapplication.store.domain.model.Rating
 
 @Composable
-fun ProductCard(
-    modifier: Modifier = Modifier,
+fun ProductCardMini(
     product: Product,
     onClick: (Product) -> Unit
 ) {
     Card(
         onClick = { onClick(product) },
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = Modifier
+            .width(160.dp)
             .padding(4.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
@@ -61,7 +59,7 @@ fun ProductCard(
                     .fillMaxWidth()
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White),
+                    .background(Color.White), // Ensure image has background if transparent
                 contentScale = ContentScale.Fit
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -84,7 +82,7 @@ fun ProductCard(
                 fontWeight = FontWeight.Medium,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.height(40.dp)
+                modifier = Modifier.height(40.dp) // Fixed height for title alignment
             )
             
             Spacer(modifier = Modifier.height(4.dp))
@@ -96,7 +94,7 @@ fun ProductCard(
                 Icon(
                     imageVector = Icons.Default.Star,
                     contentDescription = "Rating",
-                    tint = Color(0xFFFFB300),
+                    tint = Color(0xFFFFB300), // Amber/Gold color
                     modifier = Modifier.size(14.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
@@ -125,7 +123,7 @@ fun ProductCard(
 fun ProductCardPreview() {
     val sampleProduct = Product(
         id = 1,
-        title = "Stylish Shoes",
+        title = "Stylish Shoes with a very long name to test overflow behavior",
         price = 79.99,
         description = "High quality running shoes",
         category = "Footwear",
@@ -133,6 +131,6 @@ fun ProductCardPreview() {
         rating = Rating(rage = 4.5, count = 120)
     )
 
-    ProductCard(product = sampleProduct,
+    ProductCardMini(product = sampleProduct,
         onClick = {  })
 }

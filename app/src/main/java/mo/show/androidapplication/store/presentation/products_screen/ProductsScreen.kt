@@ -1,7 +1,9 @@
 package mo.show.androidapplication.store.presentation.products_screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,32 +11,32 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import mo.show.androidapplication.store.domain.model.Product
 import mo.show.androidapplication.store.domain.model.Rating
 import mo.show.androidapplication.store.presentation.products_screen.components.CategoryList
 import mo.show.androidapplication.store.presentation.products_screen.components.ProductCard
+import mo.show.androidapplication.store.presentation.util.components.CreativeTopBar
 import mo.show.androidapplication.store.presentation.util.components.LoadingDialog
-import mo.show.androidapplication.store.presentation.util.components.MyTopAppBar
 
 @Composable
 internal fun ProductsScreen (
@@ -75,60 +77,88 @@ fun ProductsContent(
     // page Content
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar ={ MyTopAppBar(title = "Products", onBack = onBack) }
-    ) {innerPadding ->
+    ) { innerPadding ->
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(bottom = innerPadding.calculateBottomPadding())
         ) {
+            // Creative Top Bar
+            CreativeTopBar(onBack = onBack,"Products")
 
-            OutlinedTextField(
-                value = query,
-                onValueChange = { query = it },
-                label = { Text(text = "Search Products by Name") },
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                shape = RoundedCornerShape(16.dp)
-                )
+                    .fillMaxSize()
+            ) {
 
-            CategoryList(
-                categories = categories,
-                selectedCategory = selectedCategory,
-                onCategorySelected = { selectedCategory = it }
-            )
-
-            if (filteredProducts.isEmpty()) {
-                // Show a message when no products match
-                Text(
-                    text = "No products found",
+                OutlinedTextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    placeholder = { Text(text = "Search Products...") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search"
+                        )
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Gray
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    shape = RoundedCornerShape(50),
+                    colors = androidx.compose.material3.TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedIndicatorColor = MaterialTheme.colorScheme.outline
+                    ),
+                    singleLine = true
                 )
-            } else {
-                LazyVerticalStaggeredGrid(
-                    modifier = Modifier.padding(top = 10.dp),
-                    columns = StaggeredGridCells.Fixed(count = 2),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalItemSpacing = 10.dp
-                ) {
-                    items(filteredProducts) { product ->
-                        ProductCard(
-                            product = product,
-                            onClick = { onProductClick(product.id) })
+
+                CategoryList(
+                    categories = categories,
+                    selectedCategory = selectedCategory,
+                    onCategorySelected = { selectedCategory = it }
+                )
+
+                if (filteredProducts.isEmpty()) {
+                    // Show a message when no products match
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No products found",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                } else {
+                    LazyVerticalStaggeredGrid(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        columns = StaggeredGridCells.Fixed(count = 2),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalItemSpacing = 16.dp,
+                        contentPadding = PaddingValues(bottom = 16.dp)
+                    ) {
+                        items(filteredProducts) { product ->
+                            ProductCard(
+                                product = product,
+                                onClick = { onProductClick(product.id) })
+
+                        }
 
                     }
-
                 }
             }
         }
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
